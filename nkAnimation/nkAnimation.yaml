@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nkanimation-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nkanimation
+  template:
+    metadata:
+      labels:
+        app: nkanimation
+    spec:
+      containers:
+        - name: nkanimation-container
+          image: nginx:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nkanimation-service
+spec:
+  selector:
+    app: nkanimation
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

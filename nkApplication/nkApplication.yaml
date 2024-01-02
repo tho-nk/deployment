@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nkapplication-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nkapplication
+  template:
+    metadata:
+      labels:
+        app: nkapplication
+    spec:
+      containers:
+        - name: nkapplication-container
+          image: httpd:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nkapplication-service
+spec:
+  selector:
+    app: nkapplication
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

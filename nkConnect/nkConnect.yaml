@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nkconnect-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nkconnect
+  template:
+    metadata:
+      labels:
+        app: nkconnect
+    spec:
+      containers:
+        - name: nkconnect-container
+          image: alpine:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nkconnect-service
+spec:
+  selector:
+    app: nkconnect
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
