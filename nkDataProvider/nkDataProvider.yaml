@@ -1,37 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nkconnect-database-deployment
+  name: nkDataProvider-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nkconnect-database
+      app: nkDataProvider
   template:
-    met
-    adata:
+    metadata:
       labels:
-        app: nkconnect-database
+        app: nkDataProvider
     spec:
       containers:
-        - name: nkconnect-database-container
+        - name: nkDataProvider-container
           image: postgres:latest
           ports:
             - containerPort: 5432
           volumeMounts:
-            - name: postgres-data
+            - name: postgres-data-pv
               mountPath: /var/lib/postgresql/data
-            - name: postgres-logs
+            - name: postgres-logs-pv
               mountPath: /var/log/postgresql
+      volumes:
+        - name: postgres-data-pv # Volume name matching volumeMounts
+          persistentVolumeClaim:
+            claimName: postgres-data-pvc # Claim name for PersistentVolumeClaim
+        - name: postgres-logs-pv # Volume name matching volumeMounts
+          persistentVolumeClaim:
+            claimName: postgres-logs-pvc # Claim name for PersistentVolumeClaim
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nkconnect-database-service
+  name: nkDataProvider-service
 spec:
   selector:
-    app: nkconnect-database
+    app: nkDataProvider
   ports:
     - protocol: TCP
       port: 5432
