@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
         - name: nkconnect-container
-          image: alpine:latest
+          image: iainttho/nk-connect:latest # Update the image name and tag
           ports:
-            - containerPort: 8080
+            - containerPort: 9096 # Update the container port
 
 ---
 apiVersion: v1
@@ -28,6 +28,7 @@ spec:
     app: nkconnect
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8080
-  type: LoadBalancer
+      port: 9096
+      targetPort: 9096 # Update the target port
+      nodePort: 30808 # Specify the NodePort here
+  type: NodePort
