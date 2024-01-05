@@ -29,6 +29,6 @@ spec:
   ports:
     - protocol: TCP
       port: 9096
-      targetPort: 9096 # Update the target port
+      # targetPort: 9096 # Update the target port
       nodePort: 30808 # Specify the NodePort here
   type: NodePort
